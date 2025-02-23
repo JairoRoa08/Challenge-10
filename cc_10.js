@@ -37,3 +37,23 @@ class Order {
 const order1 = new Order(501, prod1, 2);
 console.log(order1.getOrderDetails()); 
 console.log(prod1.getDetails()); 
+
+// Task 3: Creating an Inventory Class
+class Inventory {
+    constructor() {
+        this.products = [];
+    }
+    addProduct (product) {
+        if (product instanceof Product) {
+            this.products.push(product);
+        } else {
+            console.log("Invalid product. Must be an instance of Product.");
+        }
+    }
+    listProducts () {
+        this.products.forEach(product => console.log(product.getDetails()));
+    }
+}
+const inventory = new Inventory();
+inventory.addProduct(prod1);
+inventory.listProducts();
