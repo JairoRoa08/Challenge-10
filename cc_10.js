@@ -7,20 +7,33 @@ class Product {
         this.stock = stock;
     }
     getDetails() {
-        return `Product ID: ${this.id}, Name: ${this.name}, Price: $${this.price.toFixed(2)}, Stock: ${this.stock}`;
+        return `Product: ${this.name}, ID: ${this.id}, Price: $${this.price}, Stock: ${this.stock}`;
     }
     updateStock(quantity) {
-        if (quantity > 0 && this.stock >= quantity) {
-            this.stock -= quantity;
-            console.log(`Stock updated. Remaining stock: ${this.stock}`);
+        if (quantity > this.stock) {
+            console.log("Not enough stock available.");
         } else {
-            console.log(`Insufficient stock or invalid quantity.`);
+            this.stock -= quantity;
         }
     }
 }
-const product1 = new Product("Laptop", 101, 899.99, 50);
-console.log(product1.getDetails());
-product1.updateStock(5);
-console.log(product1.getDetails());
+const prod1 = new Product("Laptop", 101, 1200, 10);
+console.log(prod1.getDetails()); 
+prod1.updateStock(3);
+console.log(prod1.getDetails()); 
 
-
+// Task 2: Create the Order class
+class Order {
+    constructor(orderId, product, quantity) {
+        this.orderId = orderId;
+        this.product = product;
+        this.quantity = quantity;
+        this.product.updateStock(this.quantity);
+    }
+    getOrderDetails() {
+        return `Order ID: ${this.orderId}, Product: ${this.product.name}, Quantity: ${this.quantity}, Total Price: $${this.product.price * this.quantity}`;
+    }
+}
+const order1 = new Order(501, prod1, 2);
+console.log(order1.getOrderDetails()); 
+console.log(prod1.getDetails()); 
