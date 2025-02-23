@@ -14,6 +14,7 @@ class Product {
             console.log("Not enough stock available.");
         } else {
             this.stock -= quantity;
+            return true; 
         }
     }
 }
@@ -28,10 +29,10 @@ class Order {
         this.orderId = orderId;
         this.product = product;
         this.quantity = quantity;
-        this.product.updateStock(this.quantity);
+        this.totalPrice = this.product.price * this.quantity;
     }
     getOrderDetails() {
-        return `Order ID: ${this.orderId}, Product: ${this.product.name}, Quantity: ${this.quantity}, Total Price: $${this.product.price * this.quantity}`;
+        return `Order ID: ${this.orderId}, Product: ${this.product.name}, Quantity: ${this.quantity}, Total Price: $${this.totalPrice}`;
     }
 }
 const order1 = new Order(501, prod1, 2);
@@ -41,19 +42,45 @@ console.log(prod1.getDetails());
 // Task 3: Creating an Inventory Class
 class Inventory {
     constructor() {
-        this.products = [];
+        this.products = []; 
+        this.orders = [];   
     }
-    addProduct (product) {
+    addProduct(product) {
         if (product instanceof Product) {
             this.products.push(product);
         } else {
             console.log("Invalid product. Must be an instance of Product.");
         }
     }
-    listProducts () {
+    listProducts() {
         this.products.forEach(product => console.log(product.getDetails()));
+    }
+// Task 4: Implementing Order Management
+    placeOrder(orderId, product, quantity) {
+        if (!(product instanceof Product)) {
+            console.log("Invalid product. Must be an instance of Product.");
+            return;
+        }
+        if (product.updateStock(quantity)) { 
+            const newOrder = new Order(orderId, product, quantity); 
+            this.orders.push(newOrder); 
+            console.log(`Order placed: ${newOrder.getOrderDetails()}`);
+        } else {
+            console.log(`Order failed: Not enough stock for ${product.name}`);
+        }
+    }
+    listOrders() {
+        if (this.orders.length === 0) {
+            console.log("No orders placed.");
+        } else {
+            this.orders.forEach(order => console.log(order.getOrderDetails()));
+        }
     }
 }
 const inventory = new Inventory();
-inventory.addProduct(prod1);
-inventory.listProducts();
+inventory.addProduct(prod1); 
+inventory.placeOrder(601, prod1, 2); 
+inventory.listOrders(); 
+console.log(prod1.getDetails()); 
+
+// Task 5 
