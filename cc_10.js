@@ -12,6 +12,7 @@ class Product {
     updateStock(quantity) {
         if (quantity > this.stock) {
             console.log("Not enough stock available.");
+            return false; 
         } else {
             this.stock -= quantity;
             return true; 
@@ -42,8 +43,8 @@ console.log(prod1.getDetails());
 // Task 3: Creating an Inventory Class
 class Inventory {
     constructor() {
-        this.products = []; 
-        this.orders = [];   
+        this.products = [];
+        this.orders = [];  
     }
     addProduct(product) {
         if (product instanceof Product) {
@@ -55,6 +56,7 @@ class Inventory {
     listProducts() {
         this.products.forEach(product => console.log(product.getDetails()));
     }
+
 // Task 4: Implementing Order Management
     placeOrder(orderId, product, quantity) {
         if (!(product instanceof Product)) {
@@ -76,11 +78,22 @@ class Inventory {
             this.orders.forEach(order => console.log(order.getOrderDetails()));
         }
     }
+
+// Task 5: Implementing Product Restocking
+    restockProduct(productId, quantity) {
+        const product = this.products.find(p => p.id === productId); 
+        if (product) {
+            product.stock += quantity; 
+            console.log(`Restocked ${quantity} of ${product.name}. New stock: ${product.stock}`);
+        } else {
+            console.log("Product not found.");
+        }
+    }
 }
 const inventory = new Inventory();
 inventory.addProduct(prod1); 
 inventory.placeOrder(601, prod1, 2); 
 inventory.listOrders(); 
 console.log(prod1.getDetails()); 
-
-// Task 5 
+inventory.restockProduct(101, 5); 
+console.log(prod1.getDetails()); 
